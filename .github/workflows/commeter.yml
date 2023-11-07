@@ -1,30 +1,36 @@
 name: commenter
 on:
-  push:
-    branches:
-      - main
-  pull_request:
+ push:
+  branches:
+   - main
+ pull_request:
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    permissions:
-      pull-requests: write
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v4
-        with:
-            python-version: '3.10' 
-      - name: installations
-        run: |
-          pip install -r requirements.txt
-      - name: Run Python script
-        run: python src/commenter.py
-      - name: Read PR comment from file
-        run: cat src/files/output.txt > pr_comment.txt
-      - name: Add PR comment
-        uses: mshick/add-pr-comment@v2
-        with:
-          message-path: pr_comment.txt
-          repo-directory: './'
-          requirements-path: 'requirements.txt'
+ test:
+  runs-on: ubuntu-latest
+  permissions:
+   pull-requests: write
+  steps:
+   - uses: actions/checkout@v2
+   - name: Check Python version
+    run: |
+     python --version
+   - uses: actions/setup-python@v4
+    with:
+      python-version: '3.10'
+   - name: installations
+    run: |
+     pip install -r requirements.txt
+   - name: Run Python script
+    run: python src/commenter.py
+   - name: Make pr_comment.txt executable
+    run: |
+     chmod +x src/files/pr_comment.txt
+   - name: Read PR comment from file
+    run: cat src/files/output.txt > src/files/pr_comment.txt
+   - name: Add PR comment
+    uses: mshick/add-pr-comment@v2
+    with:
+     message-path: src/files/pr_comment.txt
+     repo-directory: './'
+     requirements-path: 'requirements.txt'
