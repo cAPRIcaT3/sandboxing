@@ -11,12 +11,15 @@ model = AutoModel.from_pretrained(checkpoint, trust_remote_code=True).to(device)
 
 # Get the path to the src directory
 src_path = os.path.join("${{ github.workspace }}", "src")
+print(src_path)
 
 # Find all files in the src directory
 all_files = glob.glob(os.path.join(src_path, "*"))
+print(all_files)
 
 # Loop through all files in the src directory
 for file in all_files:
+  code = ""
 
   # Check if the file is a regular file
   if os.path.isfile(file):
@@ -24,6 +27,7 @@ for file in all_files:
     # Open the file and read the code
     with open(file, "r") as f:
       code = f.read()
+      print(code)
 
     # Encode the code into input IDs
     input_ids = tokenizer(code, return_tensors="pt").input_ids.to(device)
