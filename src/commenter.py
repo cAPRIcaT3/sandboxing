@@ -10,7 +10,8 @@ tokenizer = AutoTokenizer.from_pretrained(checkpoint, trust_remote_code=True)
 model = AutoModel.from_pretrained(checkpoint, trust_remote_code=True).to(device)
 
 # Get the path to the src directory
-src_path = os.path.expandenv("${{ github.workspace }}") + "/src"
+src_path = os.path.join(os.getenv("GITHUB_WORKSPACE"), "src")
+src_path = os.path.expandvars(src_path)
 print(src_path)
 
 # Find all files in the src directory
