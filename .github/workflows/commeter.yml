@@ -17,17 +17,17 @@ jobs:
       python-version: '3.10'
    - name: installations
     run: |
-     pip install -r requirements.txt
+      pip install -r requirements.txt
    - name: Run Python script
     run: python src/commenter.py
    - name: Make pr_comment.txt executable
     run: |
-     chmod +x src/files/pr_comment.txt
+      chmod +x src/files/pr_comment.txt
    - name: Read PR comment from file
     run: cat src/files/output.txt > src/files/pr_comment.txt
    - name: Add PR comment
     uses: mshick/add-pr-comment@v2
     with:
-     message-path: src/files/pr_comment.txt
-     repo-directory: './'
+      message-path: src/files/pr_comment.txt
+      repo-directory: './'
      requirements-path: 'requirements.txt'
