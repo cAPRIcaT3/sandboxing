@@ -9,11 +9,14 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 tokenizer = AutoTokenizer.from_pretrained(checkpoint, trust_remote_code=True)
 model = AutoModel.from_pretrained(checkpoint, trust_remote_code=True).to(device)
 
-files = glob.glob("*.py")
+files = glob.glob("*")
+print(files)
 for file in files:
-  code_string = ""
-  with open(file, "r") as f:
-    code_string = f.read()
+  if file.endswith(".py"):
+    code_string = ""
+    with open(file, "r") as f:
+      code_string = f.read()
+      print(code_string)
 
     input_ids = tokenizer(code_string, return_tensors="pt").input_ids.to(device)
 
