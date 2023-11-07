@@ -10,10 +10,12 @@ tokenizer = AutoTokenizer.from_pretrained(checkpoint, trust_remote_code=True)
 model = AutoModel.from_pretrained(checkpoint, trust_remote_code=True).to(device)
 
 files = glob.glob("*.py")
+print(files)
 for file in files:
   code_string = ""
   with open(file, "r") as f:
     code_string = f.read()
+    print(code_string)
 
     input_ids = tokenizer(code_string, return_tensors="pt").input_ids.to(device)
 
