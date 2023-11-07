@@ -1,6 +1,6 @@
 import glob
 import torch
-import sys
+import os
 from transformers import AutoModel, AutoTokenizer
 
 checkpoint = "Salesforce/codet5p-220m-bimodal"
@@ -9,14 +9,17 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 tokenizer = AutoTokenizer.from_pretrained(checkpoint, trust_remote_code=True)
 model = AutoModel.from_pretrained(checkpoint, trust_remote_code=True).to(device)
 
-files = glob.glob("*")
-print(files)
-for file in files:
-  if file.endswith(".py"):
-    code_string = ""
-    with open(file, "r") as f:
-      code_string = f.read()
-      print(code_string)
+# Get the path to the src directory
+src_path = os.path.join(os.path.dirname(__file__), "src")
+
+# Find all Python files in the src directory
+python_files = glob.glob(os.path.join(src_path, "*.py"))
+
+print(python_files)
+for file in python_files:
+  code_string = ""
+  with open(file, "r") as f:
+    code_string = f.read()
 
     input_ids = tokenizer(code_string, return_tensors="pt").input_ids.to(device)
 
