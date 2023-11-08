@@ -1,27 +1,33 @@
-name: commenter
+name: PR-Reviewer
+
 on:
-  push:
-    branches:
-      - main
   pull_request:
 
 jobs:
-  test:
+  review:
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v4
+    
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Setup Python environment
+        uses: actions/setup-python@v4
         with:
-            python-version: '3.10' 
-      - name: installations
+          python-version: '3.10'
+          
+      - name: Install dependencies
         run: |
           pip install -r requirements.txt
-      - name: Run Python script
-        run: python src/commenter.py
-      - name: Read PR comment from file
-        run: cat src/files/output.txt > pr_comment.txt
+          
+      - name: Loop through files
+        run: |
+          for file in src/files/*; do
+            comment=$(python src/commenter.py "$file")
+            echo "$comment" >> pr_comment.txt
+          done
+          
       - name: Add PR comment
         uses: mshick/add-pr-comment@v2
         with:
