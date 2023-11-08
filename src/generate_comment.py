@@ -32,7 +32,7 @@ with open(output_file, "a") as output:
                 code = f.read()
 
             # Generate comment using the model
-            inputs = tokenizer(prompt + code, return_tensors="pt", pad_token_id=pad_token_id)
+            inputs = tokenizer(prompt + code, return_tensors="pt")
 
             # Create an attention mask
             attention_mask = torch.ones(inputs.input_ids.shape, dtype=torch.long, device=inputs.input_ids.device)
