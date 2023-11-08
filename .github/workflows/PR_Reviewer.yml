@@ -20,6 +20,7 @@ jobs:
         run: |
           pip install pipreqs
           pip install tiktoken
+          pip install transformers
 
       - name: Generate requirements.txt with pipreqs
         run: |
