@@ -1,14 +1,10 @@
 import glob
 import os
 import torch
-from transformers import CodeGen25Tokenizer, AutoModelForCausalLM
+from transformers import AutoTokenizer, AutoModelForCausalLM
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
-tokenizer = CodeGen25Tokenizer()
-
-model = AutoModelForCausalLM.from_pretrained("Salesforce/codegen25-7b-mono").to(device)
-
+tokenizer = AutoTokenizer.from_pretrained("Salesforce/codegen2-16B")
+model = AutoModelForCausalLM.from_pretrained("Salesforce/codegen2-16B", trust_remote_code=True, revision="main")
 # Define the prompt
 prompt = "# this is code for code review, please review it and provide feedback."
 
