@@ -3,8 +3,8 @@ import os
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
-tokenizer = AutoTokenizer.from_pretrained("Salesforce/codegen2-3_7B")
-model = AutoModelForCausalLM.from_pretrained("Salesforce/codegen2-3_7B", trust_remote_code=True, revision="main")
+tokenizer = AutoTokenizer.from_pretrained("Salesforce/codegen2-1B")
+model = AutoModelForCausalLM.from_pretrained("Salesforce/codegen2-1B", trust_remote_code=True, revision="main")
 # Define the prompt
 prompt = "# this is code for code review, please review it and provide feedback."
 
