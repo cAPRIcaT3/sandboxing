@@ -23,6 +23,8 @@ jobs:
       - name: Generate requirements.txt with pipreqs
         run: |
           pipreqs $GITHUB_WORKSPACE/src
+          mv $GITHUB_WORKSPACE/src/requirements.txt $GITHUB_WORKSPACE/requirements.txt
+
 
       - name: Install dependencies
         run: |
