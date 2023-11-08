@@ -5,6 +5,10 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 
 tokenizer = AutoTokenizer.from_pretrained("Salesforce/codegen2-1B")
 model = AutoModelForCausalLM.from_pretrained("Salesforce/codegen2-1B", trust_remote_code=True, revision="main")
+
+# Define the pad token ID
+pad_token_id = 0
+
 # Define the prompt
 prompt = "# this is code for code review, please review it and provide feedback."
 
@@ -28,8 +32,13 @@ with open(output_file, "a") as output:
                 code = f.read()
 
             # Generate comment using the model
-            inputs = tokenizer(prompt + code, return_tensors="pt")
-            generated_comments = model.generate(inputs)
+            inputs = tokenizer(prompt + code, return_tensors="pt", pad_token_id=pad_token_id)
+
+            # Create an attention mask
+            attention_mask = torch.ones(inputs.input_ids.shape, dtype=torch.long, device=inputs.input_ids.device)
+
+            # Generate comments with attention mask
+            generated_comments = model.generate(inputs, attention_mask=attention_mask)
 
             decoded_comments = tokenizer.decode(generated_comments[0], skip_special_tokens=True)
             print(f"Generated comment: {decoded_comments}")
