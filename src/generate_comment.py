@@ -33,6 +33,9 @@ with open(output_file, "a") as output:
 
             # Generate comment using the model
             inputs = tokenizer(prompt + code, return_tensors="pt")
+            # Print the shape of the inputs tensor
+            print(inputs.input_ids.shape)
+
 
             # Create an attention mask
             attention_mask = torch.ones(inputs.input_ids.shape, dtype=torch.long, device=inputs.input_ids.device)
