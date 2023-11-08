@@ -24,7 +24,7 @@ jobs:
       - name: Loop through files
         run: |
           for file in src/files/*; do
-            comment=$(python src/commenter.py "$file")
+            comment=$(python src/generate_comment.py "$file")
             echo "$comment" >> pr_comment.txt
           done
           
