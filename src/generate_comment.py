@@ -12,11 +12,9 @@ model = AutoModel.from_pretrained(checkpoint, trust_remote_code=True).to(device)
 # Get the path to the src directory
 src_path = os.path.join(os.getenv("GITHUB_WORKSPACE"), "src")
 src_path = os.path.expandvars(src_path)
-print(src_path)
 
 # Find all files in the src directory
 all_files = glob.glob(os.path.join(src_path, "*"))
-print(all_files)
 
 # Loop through all files in the src directory
 for file in all_files:
@@ -44,3 +42,5 @@ for file in all_files:
     # Write the comment to the output file
     with open("src/files/output.txt", "a") as f:
       f.write(f"{tokens}\n")
+      f.write("\n")
+      f.write("\n")
