@@ -28,7 +28,7 @@ with open(output_file, "a") as output:
                 code = f.read()
 
             # Generate comment using the model
-            inputs = tokenizer(prompt + code, return_tensors="pt").to(device)
+            inputs = tokenizer(prompt + code, return_tensors="pt")
             generated_comments = model.generate(inputs)
 
             decoded_comments = tokenizer.decode(generated_comments[0], skip_special_tokens=True)
