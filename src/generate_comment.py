@@ -1,11 +1,10 @@
 import glob
 import os
 import torch
-from transformers import AutoTokenizer, AutoModelForCausalLM
+from transformers import CodeGen25Tokenizer, AutoModelForCausalLM
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-# Instantiate the CodeGen25Tokenizer class instead of using AutoTokenizer.from_pretrained()
 tokenizer = CodeGen25Tokenizer()
 
 model = AutoModelForCausalLM.from_pretrained("Salesforce/codegen25-7b-mono").to(device)
