@@ -5,7 +5,9 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-tokenizer = AutoTokenizer.from_pretrained("Salesforce/codegen25-7b-mono", trust_remote_code=True)
+# Instantiate the CodeGen25Tokenizer class instead of using AutoTokenizer.from_pretrained()
+tokenizer = CodeGen25Tokenizer()
+
 model = AutoModelForCausalLM.from_pretrained("Salesforce/codegen25-7b-mono").to(device)
 
 # Define the prompt
@@ -17,7 +19,7 @@ src_path = os.path.expandvars(src_path)
 
 # Define the output directory
 output_dir = os.path.join(src_path, "files")
-os.makedirs(output_dir, exist_ok=True)  # Create the directory if it doesn't exist
+os.makedirs(output_dir, exist_ok=True) # Create the directory if it doesn't exist
 
 output_file = os.path.join(output_dir, "output.txt")
 
