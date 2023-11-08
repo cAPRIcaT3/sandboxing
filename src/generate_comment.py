@@ -1,18 +1,15 @@
 import glob
 import os
 import torch
-from transformers import GPTNeoForCausalLM, GPT2Tokenizer
+from transformers import AutoTokenizer, AutoModelForCausalLM
 
-# Update the checkpoint for GPT-Neo
-checkpoint = "EleutherAI/gpt-neo-2.7B"
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-# Add variables for prompts
-prompt_start = "This is a piece of code for review: "
-prompt_end = "Review complete. Comments: "
+tokenizer = AutoTokenizer.from_pretrained("Salesforce/codegen25-7b-mono", trust_remote_code=True)
+model = AutoModelForCausalLM.from_pretrained("Salesforce/codegen25-7b-mono").to(device)
 
-tokenizer = GPT2Tokenizer.from_pretrained(checkpoint)
-model = GPTNeoForCausalLM.from_pretrained(checkpoint).to(device)
+# Define the prompt
+prompt = "# this is code for code review, please review it and provide feedback."
 
 # Get the path to the src directory
 src_path = os.path.join(os.getenv("GITHUB_WORKSPACE"), "src")
@@ -33,13 +30,12 @@ with open(output_file, "a") as output:
             with open(file, "r") as f:
                 code = f.read()
 
-            full_prompt = f"{prompt_start}\n{code}\n{prompt_end}\n"
-            input_ids = tokenizer.encode(full_prompt, return_tensors="pt").to(device)
+            # Generate comment using the model
+            inputs = tokenizer(prompt + code, return_tensors="pt").to(device)
+            generated_comments = model.generate(inputs)
 
-            generated_ids = model.generate(input_ids, max_length=100, num_return_sequences=1)
-            tokens = tokenizer.decode(generated_ids[0], skip_special_tokens=True)
-
-            print(f"Generated comment: {tokens}")
+            decoded_comments = tokenizer.decode(generated_comments[0], skip_special_tokens=True)
+            print(f"Generated comment: {decoded_comments}")
 
             # Write the comment to the output file
-            output.write(f"{tokens}\n\n\n")
+            output.write(f"{decoded_comments}\n\n\n")
