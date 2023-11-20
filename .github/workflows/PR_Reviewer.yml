@@ -27,7 +27,11 @@ jobs:
 
       - name: Install GPU llama-cpp-python
         run: |
+          cmake -S . -B build
+          cd build
           cmake -DLLAMA_CUBLAS=on
+          make install
+
           
       - name: Install base dependencies
         run: |
