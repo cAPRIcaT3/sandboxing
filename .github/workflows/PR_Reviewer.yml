@@ -25,7 +25,11 @@ jobs:
 
       - name: Install GPU llama-cpp-python
         run: |
-          !CMAKE_ARGS="-DLLAMA_CUBLAS=on" FORCE_CMAKE=1 pip install llama-cpp-python==0.1.78 numpy==1.23.4 --force-reinstall --upgrade --no-cache-dir --verbose
+          cmake -DLLAMA_CUBLAS=on FORCE_CMAKE=1
+          
+      - name: Install base dependencies
+        run: |
+          pip install llama-cpp-python==0.1.78 numpy==1.23.4 --force-reinstall --upgrade --no-cache-dir --verbose
 
       - name: Install huggingface_hub
         run: |
