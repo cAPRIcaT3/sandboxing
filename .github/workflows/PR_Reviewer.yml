@@ -1,9 +1,3 @@
-name: PR-Reviewer
-
-on:
-  push:
-  pull_request:
-
 jobs:
   review:
     runs-on: ubuntu-latest
@@ -27,10 +21,11 @@ jobs:
 
       - name: Install GPU llama-cpp-python
         run: |
-          mkdir /home/runner/work/sandboxing/FORCE_CMAKE=1
-          cd /home/runner/work/sandboxing/FORCE_CMAKE=1
-          cmake -DLLAMA_CUBLAS=on FORCE_CMAKE=1
-          
+          mkdir /home/runner/work/sandboxing
+          cd /home/runner/work/sandboxing
+          cmake -DLLAMA_CUBLAS=on
+          make -j$(nproc)
+
       - name: Install base dependencies
         run: |
           pip install llama-cpp-python==0.1.78 numpy==1.23.4 --force-reinstall --upgrade --no-cache-dir --verbose
