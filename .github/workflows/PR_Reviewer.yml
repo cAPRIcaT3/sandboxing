@@ -27,6 +27,8 @@ jobs:
 
       - name: Install GPU llama-cpp-python
         run: |
+          mkdir /home/runner/work/sandboxing/FORCE_CMAKE=1
+          cd /home/runner/work/sandboxing/FORCE_CMAKE=1
           cmake -DLLAMA_CUBLAS=on FORCE_CMAKE=1
           
       - name: Install base dependencies
