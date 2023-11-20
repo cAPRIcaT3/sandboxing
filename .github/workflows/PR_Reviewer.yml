@@ -9,25 +9,35 @@ jobs:
     permissions:
       pull-requests: write
     steps:
-    
       - name: Checkout repository
         uses: actions/checkout@v2
+
       - name: Setup Python environment
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
-          
-      - name: Install dependencies
+
+      - name: Install CUDA and cuDNN
         run: |
-          pip install -r requirements.txt
-          
+          wget https://developer.nvidia.com/cuda/cuda-11.0/Prod/2023/4/cuda-11.0.232.135_450.510_linux.run
+          sudo sh cuda-11.0.232.135_450.510_linux.run
+          sudo apt-get install libcudnn7-dev libcudnn7-dev:cuda11.0
+
+      - name: Install GPU llama-cpp-python
+        run: |
+          !CMAKE_ARGS="-DLLAMA_CUBLAS=on" FORCE_CMAKE=1 pip install llama-cpp-python==0.1.78 numpy==1.23.4 --force-reinstall --upgrade --no-cache-dir --verbose
+
+      - name: Install huggingface_hub
+        run: |
+          pip install huggingface_hub
+
       - name: Loop through files
         run: |
           for file in src/files/*; do
             comment=$(python src/generate_comment.py "$file")
             echo "$comment" >> pr_comment.txt
           done
-          
+
       - name: Add PR comment
         uses: mshick/add-pr-comment@v2
         with:
