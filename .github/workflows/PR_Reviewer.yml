@@ -20,9 +20,10 @@ jobs:
 
       - name: Install CUDA and cuDNN
         run: |
-          wget https://developer.nvidia.com/cuda/cuda-11.0/Prod/2023/4/cuda-11.0.232.135_450.510_linux.run
-          sudo sh cuda-11.0.232.135_450.510_linux.run
-          sudo apt-get install libcudnn7-dev libcudnn7-dev:cuda11.0
+          wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.1-1_all.deb
+          sudo dpkg -i cuda-keyring_1.1-1_all.deb
+          sudo apt-get update
+          sudo apt-get -y install cuda-toolkit-12-3
 
       - name: Install GPU llama-cpp-python
         run: |
