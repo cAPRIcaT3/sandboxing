@@ -29,6 +29,8 @@ jobs:
         run: |
           sudo apt-get install cmake
           sudo apt install build-essential
+          mkdir -p sandboxing-build
+          cd sandboxing-build
           cmake -S . -B build
           cd build
           cmake -DLLAMA_CUBLAS=on
