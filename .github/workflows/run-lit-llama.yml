@@ -40,7 +40,7 @@ jobs:
           
       - name: Run Lit-Llama
         run: |
-          python generate.py --prompt "Hello, my name is"
+          python ${{ github.workspace }}/lit-llama/generate.py --prompt "Hello, my name is"
 
       #- name: Loop through files
        # run: |
